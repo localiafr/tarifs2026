@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LocalBot — Fiche de Prix</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f8f5f0;
+    --gold: #c9a84c;
+    --gold-light: #f0d980;
+    --muted: #6b6b7b;
+    --border: #e0dbd2;
+    --accent: #2d6a4f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .header::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 0 auto 24px;
+  }
+
+  .header .label {
+    font-size: 0.75em;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 1em;
+    font-weight: 300;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4em;
+    font-weight: 700;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* CARTE STARTER */
+  .starter-card {
+    background: var(--ink);
+    color: white;
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .starter-card::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+  }
+
+  .starter-card .badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 0.7em;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .starter-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    margin-bottom: 6px;
+  }
+
+  .starter-card .subtitle {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.9em;
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+
+  .starter-card .price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .starter-card .price .amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5em;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .starter-card .price .details {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85em;
+    font-weight: 300;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9em;
+    font-weight: 300;
+    line-height: 1.4;
+  }
+
+  .feature .check {
+    color: var(--gold);
+    font-size: 1em;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .starter-card .note {
+    background: rgba(255,255,255,0.06);
+    border-left: 3px solid var(--gold);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.82em;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+  }
+
+  /* MAINTENANCE GRID */
+  .maintenance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .maint-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+
+  .maint-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .maint-card.popular {
+    border-color: var(--accent);
+    border-width: 2px;
+  }
+
+  .maint-card .pop-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .maint-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1em;
+    margin-bottom: 4px;
+  }
+
+  .maint-card .maint-subtitle {
+    font-size: 0.78em;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+
+  .maint-card .maint-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .maint-card .maint-price span {
+    font-size: 0.4em;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    color: var(--muted);
+  }
+
+  .maint-card .maint-features {
+    list-style: none;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .maint-card .maint-features li {
+    font-size: 0.82em;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  .maint-card .maint-features li::before {
+    content: '—';
+    color: var(--gold);
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+
+  /* INTERVENTIONS */
+  .interventions {
+    margin-bottom: 48px;
+  }
+
+  .inter-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .inter-table tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .inter-table tr:hover {
+    background: rgba(201,168,76,0.04);
+  }
+
+  .inter-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .inter-table td {
+    padding: 16px 8px;
+    font-size: 0.9em;
+  }
+
+  .inter-table td:first-child {
+    font-weight: 500;
+    width: 55%;
+  }
+
+  .inter-table td:nth-child(2) {
+    color: var(--muted);
+    font-size: 0.82em;
+    font-weight: 300;
+  }
+
+  .inter-table td:last-child {
+    text-align: right;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+    margin: 0 auto 20px;
+  }
+
+  .footer p {
+    font-size: 0.8em;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .footer strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .features { grid-template-columns: 1fr; }
+    .maintenance-grid { grid-template-columns: 1fr; }
+    .starter-card { padding: 28px 24px; }
+    .header h1 { font-size: 2em; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="label">Tarifs & Prestations</div>
+    <h1>LocalBot</h1>
+    <p style="font-family:'Playfair Display',serif; font-size:1.1em; color:var(--gold); margin-bottom:12px; font-weight:400; letter-spacing:1px;">Chat box IA pour commerces locaux</p>
+    <p>Assistant virtuel IA personnalisé, disponible 24h/24, intégré directement sur votre site web ou accessible via QR code.</p>
+  </div>
+
+  <!-- STARTER -->
+  <div class="section-title">
+    <h2>Offre d'installation</h2>
+  </div>
+
+  <div class="starter-card">
+    <div class="badge">Offre unique</div>
+    <h3>Starter</h3>
+    <div class="subtitle">Tout ce qu'il faut pour démarrer — sans surprise</div>
+    <div class="price">
+      <div class="amount">300€</div>
+      <div class="details">paiement unique<br>TVA non applicable</div>
+    </div>
+    <div class="features">
+      <div class="feature"><span class="check">✦</span> Chatbot personnalisé à votre activité</div>
+      <div class="feature"><span class="check">✦</span> Intégration sur votre site existant</div>
+      <div class="feature"><span class="check">✦</span> Hébergement du chatbot inclus 1 an</div>
+      <div class="feature"><span class="check">✦</span> Réponses FAQ, horaires, contact</div>
+      <div class="feature"><span class="check">✦</span> QR code fourni si pas de site web</div>
+      <div class="feature"><span class="check">✦</span> 1 mois de support inclus</div>
+    </div>
+    <div class="note">⚑ &nbsp;Au-delà du mois de support inclus, toute intervention est facturée selon le tarif maintenance ci-dessous.</div>
+  </div>
+
+  <!-- MAINTENANCE -->
+  <div class="section-title">
+    <h2>Maintenance mensuelle</h2>
+  </div>
+
+  <div class="maintenance-grid">
+
+    <div class="maint-card">
+      <h4>Essentiel</h4>
+      <div class="maint-subtitle">Je garde le chatbot en ligne</div>
+      <div class="maint-price">20€ <span>/ mois</span></div>
+      <ul class="maint-features">
+        <li>Maintien en ligne du chatbot</li>
+        <li>Chatbot opérationnel garanti</li>
+        <li>Redémarrage si incident</li>
+        <li>Support par email sous 24h</li>
+      </ul>
+    </div>
+
+    <div class="maint-card popular">
+      <div class="pop-badge">Recommandé</div>
+      <h4>Standard</h4>
+      <div class="maint-subtitle">Le plus choisi par les artisans</div>
+      <div class="maint-price">35€ <span>/ mois</span></div>
+      <ul class="maint-features">
+        <li>Tout l'Essentiel</li>
+        <li>1 modification/mois incluse</li>
+        <li>Mise à jour horaires & infos</li>
+        <li>Support SMS sous 24h</li>
+      </ul>
+    </div>
+
+    <div class="maint-card">
+      <h4>Sérénité</h4>
+      <div class="maint-subtitle">Zéro souci, je gère tout</div>
+      <div class="maint-price">50€ <span>/ mois</span></div>
+      <ul class="maint-features">
+        <li>Tout le Standard</li>
+        <li>Modifications illimitées</li>
+        <li>Rapport mensuel d'utilisation</li>
+        <li>Priorité d'intervention</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- INTERVENTIONS HORS MAINTENANCE -->
+  <div class="interventions">
+    <div class="section-title">
+      <h2>Interventions hors maintenance</h2>
+    </div>
+
+    <table class="inter-table">
+      <tr>
+        <td>Modification des informations (horaires, prix...)</td>
+        <td>Délai : 24-48h</td>
+        <td>30 €</td>
+      </tr>
+      <tr>
+        <td>Ajout de nouvelles questions / réponses</td>
+        <td>Jusqu'à 10 questions</td>
+        <td>50 €</td>
+      </tr>
+      <tr>
+        <td>Intervention urgente — chatbot hors ligne</td>
+        <td>Délai : sous 4h</td>
+        <td>60 €</td>
+      </tr>
+      <tr>
+        <td>Refonte complète du chatbot</td>
+        <td>Nouveau prompt & config</td>
+        <td>80 €</td>
+      </tr>
+      <tr>
+        <td>Ajout d'une fonctionnalité (ex : prise de RDV)</td>
+        <td>Sur devis</td>
+        <td>À partir de 150 €</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>
+      <strong>Règlement :</strong> 50% à la commande · 50% à la livraison<br>
+      <strong>Délai de mise en ligne :</strong> 48 à 72h après réception des informations<br>
+      TVA non applicable — Article 293B du CGI
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
